@@ -1,0 +1,228 @@
+%-------------------------------------------------------------------------------
+%
+% This template is a modified version of what is provided at:
+%    https://github.com/lungetech/proposal-template
+% 
+% Copyright (c) 2015, Nuand, LLC
+% Copyright (c) 2013, Lunge Technology, LLC
+% All rights reserved.
+% 
+% Redistribution and use in source and binary forms, with or without modification,
+% are permitted provided that the following conditions are met:
+% 
+%   Redistributions of source code must retain the above copyright notice, this
+%   list of conditions and the following disclaimer.
+% 
+%   Redistributions in binary form must reproduce the above copyright notice, this
+%   list of conditions and the following disclaimer in the documentation and/or
+%   other materials provided with the distribution.
+% 
+%   Neither the name of the Lunge Technology, LLC nor the names of its
+%   contributors may be used to endorse or promote products derived from
+%   this software without specific prior written permission.
+% 
+% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+% ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+% WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+% DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+% ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+% (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+% LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+% ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+% (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+% SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+%
+%-------------------------------------------------------------------------------
+
+\documentclass[letterpaper,12pt]{article}
+
+\usepackage[printonlyused]{acronym}
+\usepackage{amsmath}
+%\usepackage[font={small,sf},labelfont={small,sf}]{caption}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage[includeheadfoot,left=1in,top=.4in,right=1in,bottom=.75in,headsep=\dimexpr3cm-59pt\relax,headheight=59pt]{geometry}
+\usepackage{graphicx}
+%\usepackage[pagebackref,hyperindex=true]{hyperref}
+\usepackage[hidelinks]{hyperref}
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage{mdwlist}
+\usepackage{parskip}
+\usepackage{setspace}
+\usepackage{tabularx}
+\usepackage[compact]{titlesec}
+\usepackage{xfrac}
+\usepackage{xspace}
+\usepackage[table,xcdraw]{xcolor}
+
+% default font packages
+\usepackage{courier} % use courier for the mono-spaced font 
+\usepackage{helvet}  % use a Helvetica clone for default text (sans-serif)
+
+% Uses PDF page rotate attr. Change to lscape if PDF output is not desired.
+\usepackage{pdflscape}  
+
+
+%%%
+% default document settings
+%%%
+
+% setup the default fonts for section headers
+\titleformat*{\section}{\sffamily\fontsize{16}{16}\selectfont\bfseries}
+\titleformat*{\subsection}{\sffamily\fontsize{14}{14}\selectfont\bfseries}
+\titleformat*{\subsubsection}{\sffamily\fontsize{12}{12}\selectfont\bfseries}
+\titleformat*{\paragraph}{\sffamily\fontsize{12}{12}\selectfont\bfseries}
+\titleformat*{\subparagraph}{\sffamily\fontsize{12}{12}\selectfont\bfseries}
+
+% section numbering
+\setcounter{tocdepth}{3}     % display only 3 sections deep in the table of contents
+\setcounter{secnumdepth}{5}  % number to 5 sections deep
+
+% add acronyms to the TOC (use chapter, if chapters are available, otherwise use sections
+% Based off of suggestions at: http://jevopi.blogspot.com/2009/09/acronyms-and-latex.html
+\providecommand{\listofacronymsname}{List of Acronyms and Abbreviations}
+\providecommand{\listofacronyms}{
+    \ifx\chapter\undefined
+        \chapter*{\listofacronymsname}
+	    % \addcontentsline{toc}{chapter}{\listofacronymsname}
+    \else
+        \section*{\listofacronymsname}
+		% \addcontentsline{toc}{section}{\listofacronymsname}
+    \fi
+    \label{sec:acronyms}
+	\markboth{\listofacronymsname}{\listofacronymsname}
+    \input{include/acronyms}
+}
+
+%%%
+% custom page styles
+%%%
+
+\fancypagestyle{plain}{
+    \ifdefined\headerleft
+      \fancyhead[L]{\headerleft}
+    \else
+      \fancyhead[L]{}
+    \fi
+    \ifdefined\headercenter
+      \fancyhead[C]{ \textbf{\headercenter}}
+    \else
+      \fancyhead[C]{ \textbf{\title}}
+    \fi
+    \fancyhead[R]{ Nuand, LLC}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\small \thepage}
+}
+
+% set the default page style to "plain"
+\pagestyle{plain}
+
+%%%
+% page templates
+%%%
+
+\newcommand{\whitepapercover}{
+    \begin{titlepage}
+    \thispagestyle{empty}
+    \vspace*{1.25in}
+
+    \hfill \textsc{\sffamily\huge\bfseries \MakeLowercase{\title}} \\
+    \begin{flushright}
+      \textsc{\sffamily\large \MakeLowercase{\subtitle}} \\
+      \vspace*{0.25in}
+      \textsc{\sffamily\large \MakeLowercase{\today}}
+    \end{flushright}
+
+    \vspace{2.5in}
+    \begin{center}
+        \includegraphics[width=4.0in]{images/logo.png}
+    \end{center}
+
+    \end{titlepage}
+    \cleardoublepage
+}
+
+\newcommand{\bib}{
+    \cleardoublepage
+    \pagestyle{plain}
+    \phantomsection
+    \ifx\chapter\undefined
+        \addcontentsline{toc}{chapter}{References}
+    \else
+        \addcontentsline{toc}{section}{References}
+    \fi
+    \bibliographystyle{unsrt} % unsrt = plain, except sorted by use, not date.
+    {
+        \raggedright
+        \bibliography{include/refs}
+    }
+}
+
+\newcommand{\docinfo}{
+    \pagenumbering{roman}
+    \thispagestyle{plain}
+    \section*{License}
+    This work by Nuand, LLC is licensed under:
+    \begin{center}
+      \footnotesize
+      \href{http://creativecommons.org/licenses/by/4.0/}{\texttt{Creative Commons Attribution 4.0 International License}} \\
+      \vspace{0.125in}
+      \href{http://creativecommons.org/licenses/by/4.0/}{\includegraphics[width=1in]{images/by.png}}
+    \end{center}
+
+
+    \section*{Authors}
+    \authors \\
+
+    \section*{Revisions}
+    \revisions
+
+    \cleardoublepage
+
+    \tableofcontents
+
+    \cleardoublepage
+
+    \listoftables
+    \listoffigures
+
+    \cleardoublepage
+
+    \listofacronyms 
+
+    \cleardoublepage
+    \pagenumbering{arabic}
+}
+
+%%%
+% ease of use macros
+%%%
+
+% Example: \q{foo} 
+% Results: "foo" - except the quote marks go the right way.
+\newenvironment{q}[1]{``#1''} 
+
+% example: C:$\bs$Program Files$\bs$Adobe$\bs$
+% Results: C:\Program Files\Adobe\
+\def \bs{\char`\\}
+
+% example: \begin{fig}{figure label}{figure caption}{ ... }
+% results: A figure, boxed in the center, with font slightly shrunk, with a label and caption
+\newcommand{\temporarylabel}{}
+\newcommand{\temporarycaption}{}
+\newenvironment{fig}[2]{
+    \renewcommand{\temporarylabel}{#1}
+    \renewcommand{\temporarycaption}{#2}
+    \begin{figure}[!htbp]
+    \begin{center}
+    \begin{small}
+}{
+    \end{small}
+    \end{center}
+    \caption{\temporarycaption \label{\temporarylabel}}
+    \end{figure}
+}

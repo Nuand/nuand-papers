@@ -1,0 +1,17 @@
+*~
+*.sw[a-z]
+
+*.aux
+*.d
+*.fls
+*.lo[ftg]
+*.make
+*.out
+*.pdf
+*.toc
+*.bbl
+*.blg
+*.temp
+*converted-to.pdf
+
+latex-makefile
