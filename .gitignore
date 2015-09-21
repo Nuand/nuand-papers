@@ -7,11 +7,12 @@
 *.lo[ftg]
 *.make
 *.out
-*.pdf
 *.toc
 *.bbl
 *.blg
 *.temp
+*.cookie
 *converted-to.pdf
 
 latex-makefile
+bladeRF_frs.pdf
