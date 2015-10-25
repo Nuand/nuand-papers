@@ -977,32 +977,32 @@ containing a concurrent transmission on channels 8 through 14 while Figure
 containing the simultaneous transmission on all 14 channels is presented in
 Figure \ref{fig:osmo-all}.
 
-Per these plots, the channels are located at the expected frequencies, with
-bandwidths within the 12.kHz maximum. The expected aliases that occur as a side
-effect of polyphase synthesis \cite{TRONDEAU_PFB} are significantly rejected by
-the designed filters and are observed to occur 100 dB below the signals of
-interest.
-
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
   \includegraphics[width=4.75in]{images/frs/results/osmo-ch8-14.png}
   \caption{FFT plot of digital signal containing FRS channels 8-14}
   \label{fig:osmo-ch8-14}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
   \includegraphics[width=4.75in]{images/frs/results/osmo-ch8.png}
   \caption{FFT plot of digital signal containing FRS channel 8}
   \label{fig:osmo-ch8}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
   \includegraphics[width=4.75in]{images/frs/results/osmo_all_ch.png}
   \caption{FFT plot of digital signal containing all FRS channels}
   \label{fig:osmo-all}
 \end{figure}
+
+Per these plots, the channels are located at the expected frequencies, with
+bandwidths within the 12.kHz maximum. The expected aliases that occur as a side
+effect of polyphase synthesis \cite{TRONDEAU_PFB} are significantly rejected by
+the designed filters and are observed to occur 100 dB below the signals of
+interest.
 
 Next, the output of the bladeRF's \ac{TX} port is observed, using an
 Agilent E4406A \ac{VSA} \cite{VSA}. Again, the locations and widths channels
