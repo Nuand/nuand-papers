@@ -148,14 +148,24 @@ This approach has the following advantages:
 The tuning of the \ac{RX} and \ac{TX} channels in the context of the
 \ac{FRS} spectrum is presented in Figure \ref{fig:tuning}.  Note that both
 the \ac{TX} and \ac{RX} center frequencies are not in the ``center'' of the
-\ac{FRS} spectrum.  If the transceiver were tuned directly to the ``center''
-of the \ac{FRS}
-spectrum, any IQ imbalance that remains
-after calibration could cause images of channels 1-7 to interfere with channels
-8-14, and vice versa. To address this, the \ac{RX} and \ac{TX} channels are
-tuned at 200 kHz offsets.  This effect is illustrated in Figure \ref{fig:iq_imbalance}.
+\ac{FRS} spectrum, as also shown in Figure \ref{fig:iq_imbalance}(a).
+If the transceiver were tuned directly to the ``center'' of the \ac{FRS}
+spectrum, any IQ imbalance that remains after calibration could cause mirror
+images of channels 1-7 to interfere with channels 8-14, and vice versa. This situation
+is depicted in Figure \ref{fig:iq_imbalance}(b). To avoid this, the \ac{RX} and
+\ac{TX} channels are tuned at 200 kHz offsets from the ``center'' of the
+\ac{FRS} spectrum, which is illustrated in Figure \ref{fig:iq_imbalance}(c).
 
-\begin{figure}[h]
+It is important to be aware of some trade-offs with this design, which must be
+be kept in mind during the implementation and evaluation of the transceiver:
+
+\begin{enumerate}
+    \item Using over 5 MHz of bandwidth concurrently on TX and RX will exceed USB 2.0 capabilities. A USB 3.0 connection is required.
+    \item By not tuning hardware to one of the \ac{FRS} channels, any LO leakage from the transmitter may interfere with other signals.
+    \item The offset tuning approach places any IQ images out-of-band, which may interfere with neighboring signals.
+\end{enumerate}
+
+\begin{figure}[t]
   \centering
   \includegraphics{images/frs/tuning.eps}
   \caption{Transceiver tuning with respect to FRS channel allocations}
@@ -164,14 +174,29 @@ tuned at 200 kHz offsets.  This effect is illustrated in Figure \ref{fig:iq_imba
 
 \begin{figure}[h]
   \centering
-  \includegraphics[height=2.5in]{images/frs/iq_imbalance_offset_tuning.pdf}
-  \caption{(a) Tuning to center showing overlapping imbalance images. (b) Offset tuning showing non-overlapping imbalance images.}
+  \includegraphics[width=6in]{images/frs/iq_imbalance_offset_tuning.eps}
+  \\
+  \footnotesize{
+    (a) Nominal case: Tuning to ``center'' and no IQ imbalance.\\
+    (b) Realistic case: IQ imbalance yields mirror images interfering with signals.\\
+    (c) Offset tuning to ensure IQ imbalance images do not overlap.
+  }
+  \caption{Avoiding effect of IQ imbalance via offset tuning}
   \label{fig:iq_imbalance}
 \end{figure}
 
-Given the 25 kHz separation between channels and each channel's 12.5 kHz of
-bandwidth, this implies that the bladeRF needs to be configured for a
-minimum bandwidth defined by the following:
+We argue that \#1 is reasonable, given the ever increasing availability of USB 3.x controllers on modern systems.
+
+Trade-offs \#2 and \#3 include interference and out-of-band emissions and are
+therefore serious concerns. Fortunately, both DC offset and IQ imbalance can be
+compensated for using hardware features of the bladeRF. In evaluating this
+design, these signals will be important to measure and take note of.
+
+In designing with this approach, we must first determine how the transmitter and
+receiver will utilize the spectrum.  Given the 25 kHz separation between
+channels and each channel's 12.5 kHz of bandwidth, this implies that the
+bladeRF needs to be configured for a minimum bandwidth defined by the
+following:
 
 \begin{align*}
   \text{BW}_{\text{TX, min}} &=
