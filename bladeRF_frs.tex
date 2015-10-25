@@ -313,7 +313,7 @@ modulated audio signal, or $(0 + 0j)$, depending on the state of the associated
 Although only 7 of these 25 kHz channels are required, these blocks are
 configured for a total of 16 channels, with 9 of the channels left unused. This
 is done to alleviate the need for more interpolation in later blocks; a
-value of ``16'' was selected to avoid necessitating an additional factor of 2
+value of ``16'' is selected to avoid necessitating an additional factor of 2
 in later interpolating blocks.  The extra unused channels
 allow for a wider transition band to be used in the interpolating \ac{FIR}
 filter that follows this stage, which reduces the required number of filter
@@ -1012,10 +1012,9 @@ controllers may not be able to support the required 32 MB/s\footnote{Although
 the theoretical max throughput of USB 2.0 is 60 MB/s, the practical achievable
 throughput is significantly less due to protocol overheads.}
 
-Table \ref{tab:versions} lists the software versions used. A very recent GNU
-Radio version is required, because the \texttt{QT GUI Button} block was
-recently introduced. Additionally, a few patches were found to be necessary,
-and were included in the 3.7.7 release.
+Table \ref{tab:versions} lists the minimum required software versions needed to
+use this transceiver. Newer versions of the listed items should also be
+compatible.
 
 \begin{table}[h]
   \centering
