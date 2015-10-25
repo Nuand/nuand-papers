@@ -377,7 +377,9 @@ the ``edge'' of the image, expected to occur at $18.75 \,\text{kHz} = 25
 The parameters used with \texttt{fdatool} to generate these
 filter taps are shown in Table \ref{tab:tx_polysynth}. As shown by the magnitude
 response in Figure \ref{fig:filtresp_tx_ps}, spectral content outside of the
-desired region should be significantly rejected.
+desired region should be significantly rejected. However, one must take note
+of this undesired spectral content when evaluating the design and measuring
+out-of-band emissions.
 
 \begin{table}[h]
   \centering
@@ -1024,6 +1026,11 @@ The effectiveness of this strategy is made clear by Figure \ref{fig:vsa-all}.
 Note that to the left of each group of \ac{FRS} signals, a significantly
 attenuated image from the other group is present. By ensuring these images
 do not overlap with the intended signal, a higher \ac{SINAD} is achieved.
+For a laboratory experiment, 40 dB of rejection for these images and the 
+carrier caused by residual DC offset is certainly acceptable. Possible
+approachs to further reduce the undesired spectral content is to utilize
+more aggressive digital filters (likely requiring a large number of taps),
+external filters, or a combination of both.
 
 \begin{figure}[h]
   \centering
