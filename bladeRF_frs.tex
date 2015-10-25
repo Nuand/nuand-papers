@@ -41,14 +41,21 @@ modulation techniques. Prior experience with GNU Radio, \ac{GRC}, \ac{SDR}, and
 MATLAB is also beneficial.
 
 \section{Abstract}
-The Nuand bladeRF is a wideband USB 3.0 \ac{SDR} capable
-of sampling up to 28 MHz of filtered spectrum.   The wide sampling
-bandwidth of the bladeRF is utilized to implement a full duplex \ac{FRS}
-transceiver using the GNU Radio open source framework and \ac{GRC}.  The
-transceiver is capable of operation on any subset of the 14 frequencies defined
-by \ac{FRS} and includes support for \ac{CTCSS} commonly found in \ac{FRS}
-radios. A GUI created via \ac{GRC} provides a simple means to control and monitor the
-transceiver.
+
+The Nuand bladeRF is a USB 3.0 \ac{SDR} featuring full-duplex
+operation and configurable filter bandwidths that can cover up to 28 MHz.
+These properties are leveraged to design and implement a real-time \ac{FRS}
+transceiver capable of simultaneously transmitting and/or receiving on any
+subset of its 14 channels, with optional \ac{CTCSS} support. The open source
+GNU Radio framework and the \ac{GRC} tool are used to realize the transceiver
+design as a graphical flowgraph and to create an interactive GUI interface for
+the transceiver. This paper presents both a high-level description of the
+design, as well as a detailed discussion of the GNU Radio blocks utilized and
+the rationale for their associated parameter values. In doing so,
+considerations for targeting the bladeRF and accounting for real-world
+nonidealties are included. Lastly, the approaches for testing and evaluation
+the design using RF test equipment and FRS handhelds is presented, along with
+results.
 
 \cleardoublepage
 
