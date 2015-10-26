@@ -429,10 +429,49 @@ out-of-band emissions.
   \label{fig:filtresp_tx_ps}
 \end{figure}
 
+\subsubsection{Post-PS gain}
+
+A \texttt{Multiply Const} block follows each \texttt{Polyphase Synthesizer}.
+These apply gain to compensate for the reduction of average power
+resulting from zero-stuffing during interpolation.  However, the gain applied
+here is not a constant value. Instead, it is a function of the number of
+enabled channels that are being supplied to the input of the \texttt{Polyphase
+Synthesizer}. The goal here is to apply gain to the signal such that the output IQ
+values remain within [-1.0, 1.0].
+
+With only one input enabled, a gain that is just slightly less than
+the interpolation factor is used to avoid clipping. Thus, a value of $16 \times
+0.95$ is used. When a second input is enabled, the system is combining two signal
+sources whose amplitudes may be within [0.0, 1.0], yielding a signal with an
+amplitude within [0.0, 2.0].  Therefore, to keep our signal amplitude within
+the desired range, a division by two is applied, yielding a gain factor of
+$\frac{16 \times 0.95}{2}$. By carrying this logic through for our total of 7
+channels, one arrives at the following gain expression used for channels 8-15,
+with a similar expression being used for channels 1-7.
+
+\begin{center}
+    \footnotesize{ \texttt{
+        1 if tx\_num\_enabled\_ch8\_14 == 0 else 16 * 0.95 / tx\_num\_enabled\_ch8\_14
+    } }
+\end{center}
+
+\texttt{tx\_num\_enabled\_ch8\_14} is a variable that represents how many
+channels are currently enabled, based upon the state of GUI checkboxes. If no
+channels are enabled, a value of one is used as a default. Note that this
+expression is written such that the check for this zero case is first. This is
+done to ensure the logic short circuit does not cause a division by zero to be
+evaluated.
+
+Technically, the gain could be applied by scaling the \texttt{tx\_pfs\_taps}
+filter taps by this desired gain value. This would have the advantage of
+removing extraneous multiplications from the system. However, since these
+blocks are operating at a lower sample rate (400~kHz), they have been left here
+to serve as an explicit reminder of this scaling operation.
+
 The outputs of these blocks are connected to \texttt{Qt GUI Waterfall Sink}
 blocks to provide feedback to the user that the channels selected via
-checkboxes are indeed being transmitted on, as well as a confirmation of the
-signal bandwidth.
+checkboxes are indeed being transmitted on, as well as to provide visibility
+of the signal power and bandwidth.
 
 \subsubsection{Interpolating Filters}
 
