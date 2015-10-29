@@ -2,38 +2,44 @@
 \def \subtitle{Prototyping a Multi-channel FRS Transceiver with CTCSS Support via GNU Radio and the Nuand bladeRF}
 
 % Author email and affiliation
-\def \emailrghilduta    {\href{mailto:robert.ghilduta@nuand.com?cc=bladeRF@nuand.com}{robert.ghilduta@nuand.com}}
-\def \emailbpadalino    {\href{mailto:brian.padalino@nuand.com?cc=bladeRF@nuand.com}{brian.padalino@nuand.com}}
-\def \emailjszymaniak   {\href{mailto:jon.szymaniak@nuand.com?cc=bladeRF@nuand.com}{jon.szymaniak@nuand.com}}
+\def \emailrghilduta    {\href{mailto:robert.ghilduta@nuand.com?cc=bladeRF@nuand.com}{\textless{robert.ghilduta@nuand.com}\textgreater}}
+\def \emailbpadalino    {\href{mailto:brian.padalino@nuand.com?cc=bladeRF@nuand.com}{\textless{brian.padalino@nuand.com}\textgreater}}
+\def \emailjszymaniak   {\href{mailto:jon.szymaniak@nuand.com?cc=bladeRF@nuand.com}{\textless{jon.szymaniak@nuand.com}\textgreater}}
 \def \afilnuand         {Nuand, LLC}
 
 % Define authors table
 \def \authors{
   \begin{table}[h]
     \centering
-    \begin{tabular}{ccc}
-      Robert Ghilduta & Brian Padalino  & Jon Szymaniak \\
-      \emailrghilduta & \emailbpadalino & \emailjszymaniak \\
-      \afilnuand      & \afilnuand      & \afilnuand \\
+    \begin{tabular}{cc}
+      Robert Ghilduta & Brian Padalino  \\
+      \emailrghilduta & \emailbpadalino \\
+      \afilnuand      & \afilnuand      \\
     \end{tabular}
   \end{table}
-  ~\\
+
+  \begin{table}[h]
+    \centering
+    \begin{tabular}{c}
+      Jon Szymaniak \\
+      \emailjszymaniak \\
+      \afilnuand \\
+    \end{tabular}
+  \end{table}
 }
 
-% Place contributor email and affiliation definitions here
-
-% Define contributors table here
-%\def \contributors{
-%  \begin{table}[h]
-%    \centering
-%    \begin{tabular}{c}
-%      Name \\
-%      Email \\
-%      Affiliation \\
-%    \end{tabular}
-%  \end{table}
-%  ~\\
-%}
+% Contributors table
+\def \contributors{
+  \begin{table}[h]
+    \centering
+    \begin{tabular}{c}
+      Dr. Juan R. Pimentel \\
+      \textless{jpimente@kettering.edu}\textgreater \\
+      Professor of Computer Engineering \\
+      Kettering University \\
+    \end{tabular}
+  \end{table}
+}
 
 \def \tablerowcolor{\rowcolor[HTML]{C0C0C0}}
 \def \tablecolcolor{\columncolor[HTML]{C0C0C0}}
@@ -44,8 +50,9 @@
     \begin{tabular}{|c|c|l|}
       \hline
       \tablerowcolor
-      \textbf{Revision} & Date & \textbf{Summary} \hspace{4in}  \\ \hline
+      \textbf{Revision} & \textbf{Date} & \textbf{Summary} \hspace{4in}  \\ \hline
       1  & 2015-06-12 & Initial public draft \\ \hline
+      2  & 2015-10-25 & Incorporated feedback and revisions from Dr. Juan R. Pimentel \\ \hline
     \end{tabular}
   \end{table}
 }
