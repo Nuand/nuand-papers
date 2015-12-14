@@ -1,0 +1,38 @@
+Leo Bodnar Precision GPS Clock
+http://www.leobodnar.com/shop/index.php?main_page=product_info&cPath=107&products_id=234
+
+Set to 10 MHz output, 16 mA drive strength
+
+Into 50 ohm, 10 dB attenuator before entering bladeRF through J71.1 and J71.2 (mini GPIO header).
+
+setup.jpg
+  Setup picture.
+
+
+$ bladeRF-cli -i -l hostedx40-2015-12-11_16.38.46/hostedx40.rbf
+Loading fpga...
+Done.
+bladeRF> set vctcxo_tamer 10MHz
+
+  VCTCXO tamer mode: 10 MHz
+
+
+gpsdo_tune_1.png
+  Initialization routine (course tune).
+
+    bladeRF> print trimdac
+
+      Current VCTCXO trim: 0x8759
+      Stored VCTCXO trim:  0x8b28
+
+gpsdo_tune_2.png
+  Touch VCTCXO and release.
+
+gpsdo_10mhz.png
+  10 MHz signal from GPSDO with infinite persistence.
+  Better slew rate and accuracy vs. scope signal generator.
+
+
+Very close to factory calibrated value. Differences can be attribtuted to:
+  - Setup error (signal is 3.3 V 50 Ohm through 10 dB attenuator for pin on 1.8 V FPGA I/O bank)
+  - Ambient conditions (temperature (~70F), air circulation, different reference oscillator)

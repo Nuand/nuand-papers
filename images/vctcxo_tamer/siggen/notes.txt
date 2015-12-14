@@ -1,0 +1,52 @@
+Oscilloscope = Agilent MSO-X 3054A
+
+Oscilloscope has signal generator. Set:
+  - Square wave
+  - 1.8 Vpp w/ 900 mV offset to create 0 - 1.8 V
+
+For 1PPS:
+  - 20% duty cycle, 1 Hz
+
+For 10 MHz:
+  - 50% duty cycle, 10 MHz
+
+
+siggen_tune_10mhz.png
+  10 MHz
+  Initialization routine (course tune).
+  Settles out to ~682 mV
+
+    $ bladeRF-cli -i -l hostedx40-2015-12-11_16.38.46/hostedx40.rbf
+    Loading fpga...
+    Done.
+    bladeRF> set vctcxo_tamer 10MHz
+
+      VCTCXO tamer mode: 10 MHz
+
+  bladeRF> print trimdac
+
+    Current VCTCXO trim: 0x4475
+    Stored VCTCXO trim:  0x8b28
+
+
+siggen_tune_1pps.png
+  1 PPS
+  Initialization routine (course tune).
+  Settles out to ~682 mV, same as 10 MHz reference.
+
+    $ bladeRF-cli -i -l hostedx40-2015-12-11_16.38.46/hostedx40.rbf
+    Loading fpga...
+    Done.
+    bladeRF> set vctcxo_tamer 1PPS
+
+      VCTCXO tamer mode: 1 PPS
+
+    bladeRF> print trimdac
+
+      Current VCTCXO trim: 0x4451
+      Stored VCTCXO trim:  0x8b28
+
+
+siggen_10mhz.png
+  10 MHz signal from oscilloscope with infinite persistence.
+  Demonstrates poor slew rate and oscillator accuracy vs. a precision GPSDO.
