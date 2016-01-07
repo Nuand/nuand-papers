@@ -5,6 +5,7 @@ TEMPLATE_REV := d1e296d85bcba8f464facb4b9e17404606020e48
 LATEX_MAKEFILE_REV := 2.2.1-alpha10
 
 DOCS := bladeRF_frs.pdf \
+		bladeRF_windows_installer.pdf \
 
 all: docs
 

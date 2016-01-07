@@ -1,0 +1,402 @@
+\def \title{bladeRF Windows\textsuperscript{\textregistered} Install Guide}
+\def \subtitle{Installing bladeRF software with MATLAB\textsuperscript{\textregistered} \& Simulink\textsuperscript{\textregistered} support}
+
+% Author email and affiliation
+\def \emailjszymaniak   {\href{mailto:jon.szymaniak@nuand.com?cc=bladeRF@nuand.com}{\textless{jon.szymaniak@nuand.com}\textgreater}}
+\def \afilnuand         {Nuand, LLC}
+
+% Define authors table
+\def \authors{
+  \begin{table}[h]
+    \centering
+    \begin{tabular}{c}
+      Jon Szymaniak \\
+      \emailjszymaniak \\
+      \afilnuand \\
+    \end{tabular}
+  \end{table}
+}
+
+% Contributors table
+%\def \contributors{
+%  \begin{table}[h]
+%    \centering
+%    \begin{tabular}{c}
+%    % Name and emails go here
+%    \end{tabular}
+%  \end{table}
+%}
+
+\def \tablerowcolor{\rowcolor[HTML]{C0C0C0}}
+\def \tablecolcolor{\columncolor[HTML]{C0C0C0}}
+
+% Trademarked third party software
+\def \tm{\textsuperscript{\textregistered\:}}
+\def \windows{Windows\tm}
+\def \matlab{MATLAB\tm}
+\def \simulink{Simulink\tm}
+
+\def \revisions {
+  \begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|l|}
+      \hline
+      \tablerowcolor
+      \textbf{Revision} & \textbf{Date} & \textbf{Summary} \hspace{4in}  \\ \hline
+      1  & 2015-07-01 & Initial revision for 2016.01-rc1 installer \\ \hline
+    \end{tabular}
+  \end{table}
+}
+
+\input{include/template.tex}
+
+\begin{document}
+
+\whitepapercover
+\docinfo
+
+\section{Overview}
+This document describes the \windows installation procedure for pre-built
+bladeRF software and its associated \matlab \& \simulink support.
+
+\vspace{0.25in}
+
+\section{System Requirements and Recommendations}
+
+PC system requirements, such as processor and RAM specifications, are
+largely dependent upon one's target SDR application. While the bladeRF
+can be used on a USB 2.0 port, a USB 3.0 controller is recommended in
+order to fully leverage the sample rate capabilities of the device.
+
+\vspace{0.125in}
+
+\textit{Recommended minimum configuration:}
+\begin{itemize}
+  \item Quad-core 64-bit processor (3 GHz)
+  \item 4 GB RAM
+  \item USB 3.0 Controller
+  \item \windows 7 64-bit
+\end{itemize}
+
+\vspace{0.125in}
+
+\textit{Supported \windows versions}:
+\begin{itemize}
+  \item XP (32-bit \& 64-bit)
+  \item Vista (32-bit \& 64-bit)
+  \item 7 (32-bit \& 64-bit)
+  \item 8.1 (32-bit \& 64-bit)
+\end{itemize}
+
+\vspace{0.125in}
+
+\textit{Supported \matlab versions}:
+\begin{itemize} 
+  \item 2014b
+  \item 2015a
+  \item 2015b
+\end{itemize}
+
+\newpage
+
+\section{Installation Procedure}
+
+\subsection{Download}
+
+The latest available installer may always be found at:
+
+{\centerline{\footnotesize{\url{https://nuand.com/windows\_installers/bladeRF-win-installer-latest.exe}}}
+
+Previous installer versions are located at:
+
+\centerline{\footnotesize{\url{https://nuand.com/installers.php}}}
+
+\subsection{Execute Installer}
+
+Ensure the bladeRF is not connected to the system. Do not connect it until
+after the installer completes successfully, or until instructed to do so in
+Section \ref{sec:fwupdate}.
+
+Begin by running the installer executable. If \windows prompts whether the
+program should be allowed to execute, verify that the publisher is listed as
+\texttt{Nuand, LLC} before clicking \texttt{Yes}.
+
+Once started, a welcome screen will be presented, as shown below. Click \texttt{Next} to continue.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{images/windows/installer/01-welcome.png}
+\end{figure}
+
+\newpage
+\subsubsection{Destination Location} \label{sec:dest}
+Next, the installer will prompt for an installation destination. Update this field, if desired, and click \texttt{Next}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{images/windows/installer/02-destination.png}
+\end{figure}
+
+\newpage
+\subsubsection{Driver Installation}
+
+This screen presents three driver installation options. If this is
+the first time setting up the bladeRF software on the machine,
+either the \texttt{Cypress CyUSB3} or \texttt{libusb (WinUSB)}
+driver must installed.
+
+Either driver may be used. Both are provided as a matter of preference.
+Should one driver prove to be problematic on a system, the installer
+may be re-run to install the other. Additionally, a driver may be
+installed at a later time using Zadig\footnote{\url{http://zadig.akeo.ie/}}.
+
+If a driver is already installed, the last option may be used.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{images/windows/installer/03-driver.png}
+\end{figure}
+
+Click \texttt{Next} once the desired option is selected.
+
+\newpage
+\subsubsection{Firmware Update} \label{sec:fwupdate}
+
+The following page provides the option to update the bladeRF firmware during
+the installation process. This is generally recommended, as firmware releases
+generally include feature updates and fixes.
+
+It is always possible to upgrade (or downgrade) firmware at a later time using
+the \texttt{bladeRF-cli} program\footnote{via \texttt{bladeRF-cli -f <fx3
+firmware>}}. The FX3 firmware image is used for the update is installed in the
+location selected in \ref{sec:dest}, under the \texttt{fx3\_firwmare} folder.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{images/windows/installer/04-fwupgrade.png}
+\end{figure}
+
+Use \texttt{Next} to advance to the next screen.
+
+\newpage
+\subsubsection{\matlab Search Path} \label{sec:matlabsearchpath}
+
+If a 64-bit \matlab installation is detected, the following screen will be
+presented. It is recommended to select the default option of adding
+bladeRF items to the \matlab search path.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{images/windows/installer/05-matlabpath.png}
+\end{figure}
+
+Click \texttt{Next} when the desire option is selected.
+
+\newpage
+\subsubsection{Start Menu Folder}
+
+This page provides the ability to customize the Start Menu location
+under which shortcuts to the \texttt{bladeRF-cli} and uninstall program
+are placed.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{images/windows/installer/06-startmenu.png}
+\end{figure}
+
+Click \texttt{Next} to continue.
+
+\newpage
+\subsubsection{Ready to Install}
+
+Click \texttt{Next} be begin installing files to the system. This
+is the last step at which the program can be cancelled before
+changes are made.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{images/windows/installer/07-ready.png}
+\end{figure}
+
+
+\newpage
+\subsubsection{Installation Progress}
+
+The installation will display a progress bar, as shown below.
+
+If a driver has been selected for installation, A dialog will appear 
+during this stage, denoting the driver install progress.
+
+If items are to be added to the \matlab path, a \matlab window
+will momentarily appear while this is updated.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{images/windows/installer/08-installing.png}
+\end{figure}
+
+\newpage
+\subsubsection{Firmware Update Progress}
+
+If a firmware update was selected, a console similar to the one
+shown below will appear. 
+
+A message is displayed, indicating that the bladeRF to update should
+be connected to the system. Connect a bladeRF and wait for \windows
+to finish installing its driver. Check Device Manager if it is unclear
+whether this has been done.
+
+After pressing \texttt{Enter}, the firmware update will begin.
+Progress messages will be displayed as the on-board flash is
+erased and reprogrammed.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=6in]{images/windows/installer/09-fwupdate.png}
+\end{figure}
+
+Do not disconnect the bladeRF until the console displays a message
+noting that this process has completed. After a firmware update, the bladeRF
+will need to be unplugged and reconnected for the changes to take effect.
+
+Should one accidentally disconnect the device or encounter a failure, the
+device will enter a recovery bootloader mode. Information on re-flashing
+firmware while in this mode is available on the bladeRF wiki\footnote{\url{https://github.com/Nuand/bladeRF/wiki/Upgrading-bladeRF-firmware\#Upgrading\_using\_the\_FX3\_bootloader}}.
+
+\newpage
+\subsubsection{System PATH}
+
+At the end of the installation, the following screen is presented.
+Adding bladeRF items to \texttt{\%PATH\%} will allow \texttt{bladeRF-cli}
+to be executed from \texttt{cmd.exe}, and other programs to locate \texttt{bladeRF.dll}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{images/windows/installer/10-systempath.png}
+\end{figure}
+
+
+\newpage
+\subsubsection{Installation Completed}
+
+Upon completion of the previous steps, the final screen is displayed.
+
+\textbf{Important}: You may need to log out and log back in order for
+changes to the System PATH and \matlab search path variables to take effect.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{images/windows/installer/11-complete.png}
+\end{figure}
+
+\newpage
+\section{Testing Basic Device Access}
+
+A quick means of verifying that the installation has succeeded is to
+view information about a bladeRF using the \texttt{bladeRF-cli} program.
+
+A shortcut to \texttt{bladeRF-cli} may be executed from the Start Menu
+location selected in Section \ref{sec:dest}.  Alternatively, it can
+be executed from \texttt{cmd.exe} as follows:
+
+\centerline{\texttt{bladeRF-cli -i}}
+
+Once in the command-line interface, information about the
+device may be obtained using the \texttt{version}, \texttt{info},
+and \texttt{print} commands. Sample output is shown below.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=6in]{images/windows/bladeRF-cli/cli-info.png}
+\end{figure}
+
+\newpage
+\section{\matlab and \simulink}
+
+\subsection{\matlab Search Path}
+
+If bladeRF items \textbf{were not} added to the \matlab search path in Section
+\ref{sec:matlabsearchpath}, then the following paths must be provided to
+the \texttt{addpath}\footnote{\url{http://www.mathworks.com/help/matlab/ref/addpath.html?requestedDomain=www.mathworks.com}} function.
+
+\begin{itemize}
+  \item \texttt{C:\textbackslash Program Files\textbackslash bladeRF\textbackslash x64}
+  \item \texttt{C:\textbackslash Program Files\textbackslash bladeRF\textbackslash matlab}
+\end{itemize}
+
+Change \texttt{C:\textbackslash Program Files\textbackslash bladeRF} as necessitated by the installation location.
+
+\newpage
+\subsection{RX GUI Demo}
+A receive-only demo program implemented entirely in \matlab may be executed via the command: \texttt{bladeRF\_rx\_gui}
+
+As shown below, this program allows various parameters to be manipulated while viewing FFT plots and sample values in real time.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=3.5in]{images/windows/matlab/rxgui-freq.png}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=3.5in]{images/windows/matlab/rxgui-time.png}
+\end{figure}
+
+\newpage
+\subsection{Viewing Documentation}
+For information about available device properties and functions, run \texttt{doc bladeRF}.
+
+Because the bladeRF \matlab support is implemented as a thin layer atop of \texttt{bladeRF.dll}, the
+libbladeRF API documentation\footnote{\url{https://nuand.com/bladeRF-doc/libbladeRF}} may also
+be referenced for more detailed information.
+
+\newpage
+\subsection{Adding a bladeRF block to a \simulink Model}
+
+\simulink support is implemented via a System Object\footnote{\url{http://www.mathworks.com/help/vision/system-objects.html}}.
+To add a bladeRF block to a model, select the \texttt{MATLAB System} block from the Library Brower:
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=6in]{images/windows/simulink/browser.png}
+\end{figure}
+
+Once placed, double click the System block to specify that it should implement a \texttt{bladeRF\_Simulink} object.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=3.5in]{images/windows/simulink/object.png}
+\end{figure}
+
+\newpage
+
+A bladeRF block will default to being receive-only, as denoted by only having an \texttt{RX Samples} output. Double-click
+the block to open up the block properties. An input for the transmit path may be enabled in the \texttt{TX Configuration}
+tab.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=4in]{images/windows/simulink/block-properties.png}
+\end{figure}
+
+As shown below, the block may be configured for a full-duplex configuration, with both RX and TX ports.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{images/windows/simulink/block.png}
+\end{figure}
+
+\newpage
+
+Before running a simulation, the following settings \textbf{must} be applied:
+\begin{itemize}
+  \item{Select \texttt{Simulate using: Interpreted Execution} in the block properties \texttt{Devices} tab}
+  \item{Configure the model's Solver Options for \texttt{Fixed-Step}, with a \texttt{discrete (no continuous state) Solver.}}
+\end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=6in]{images/windows/simulink/model-config.png}
+\end{figure}
+
+\end{document}
