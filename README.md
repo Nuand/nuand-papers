@@ -48,5 +48,6 @@ For Ubuntu users, The following texlive packages are recommended:
  - texlive-generic-recommended
  - texlive-latex-base
  - texlive-latex-recommended
+ - texlive-latex-extra
  - texlive-math-extra
 
