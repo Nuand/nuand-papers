@@ -198,14 +198,17 @@
 
     \cleardoublepage
 
-    \listoftables
-    \listoffigures
+    \ifdefined \enablefiguretableindex
+      \listoftables
+      \listoffigures
+      \cleardoublepage
+    \fi
 
-    \cleardoublepage
+    \ifdefined \enableacronymlist
+      \listofacronyms
+      \cleardoublepage
+    \fi
 
-    \listofacronyms 
-
-    \cleardoublepage
     \pagenumbering{arabic}
 }
 
