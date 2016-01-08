@@ -1,7 +1,7 @@
    Overview
 ===============
 
-This repository contains Nuand papers and guides pertaining to the
+This repository contains documents pertaining to the
 [bladeRF SDR](https://www.nuand.com). 
 
 This repository is intended to contain information that should not
@@ -20,7 +20,7 @@ When making changes, please add yourself to the list of authors!
    Releases
 ===============
 
-As documents are completed, they will be posted to the *Documents* section on the [Nuand support page](https://nuand.com/support.php).
+As documents are completed, they will be posted to the *Documentation* section on the [Nuand support page](https://nuand.com/support.php).
 The GitHub releases page will no longer be updated, but previously published releases shall remain in place.
 
    Building 
