@@ -91,7 +91,7 @@ order to fully leverage the sample rate capabilities of the device.
 \vspace{0.125in}
 
 \textit{Supported \matlab versions}:
-\begin{itemize} 
+\begin{itemize}
   \item 2014b
   \item 2015a
   \item 2015b
@@ -169,7 +169,7 @@ generally include feature updates and fixes.
 It is always possible to upgrade (or downgrade) firmware at a later time using
 the \texttt{bladeRF-cli} program\footnote{via \texttt{bladeRF-cli -f <fx3
 firmware>}}. The FX3 firmware image is used for the update is installed in the
-location selected in \ref{sec:dest}, under the \texttt{fx3\_firwmare} folder.
+location selected in \ref{sec:dest}, under the \texttt{fx3\_firmware} folder.
 
 \begin{figure}[h]
   \centering
@@ -224,7 +224,7 @@ changes are made.
 
 The installation will display a progress bar, as shown below.
 
-If a driver has been selected for installation, A dialog will appear 
+If a driver has been selected for installation, a dialog will appear
 during this stage, denoting the driver install progress.
 
 If items are to be added to the \matlab path, a \matlab window
@@ -239,7 +239,7 @@ will momentarily appear while this is updated.
 \subsubsection{Firmware Update Progress}
 
 If a firmware update was selected, a console similar to the one
-shown below will appear. 
+shown below will appear.
 
 A message is displayed, indicating that the bladeRF to update should
 be connected to the system. Connect a bladeRF and wait for \windows
@@ -371,7 +371,7 @@ Once placed, double click the System block to specify that it should implement a
 \newpage
 
 A bladeRF block will default to being receive-only, as denoted by only having an \texttt{RX Samples} output. Double-click
-the block to open up the block properties. An input for the transmit path may be enabled in the \texttt{TX Configuration}
+the block to open up the block parameters. An input for the transmit path may be enabled in the \texttt{TX Configuration}
 tab.
 
 \begin{figure}[h]
@@ -390,7 +390,7 @@ As shown below, the block may be configured for a full-duplex configuration, wit
 
 Before running a simulation, the following settings \textbf{must} be applied:
 \begin{itemize}
-  \item{Select \texttt{Simulate using: Interpreted Execution} in the block properties \texttt{Devices} tab}
+  \item{Select \texttt{Simulate using: Interpreted Execution} in the block parameters \texttt{Devices} tab}
   \item{Configure the model's Solver Options for \texttt{Fixed-Step}, with a \texttt{discrete (no continuous state) Solver.}}
 \end{itemize}
 
