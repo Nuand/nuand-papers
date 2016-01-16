@@ -1,0 +1,65 @@
+\def \title{bladeRF User Guide}
+\def \subtitle{A comprehensive user guide for the Nuand bladeRF}
+
+% Author email and affiliation
+\def \emailbpadalino    {\href{mailto:brian.padalino@nuand.com?cc=bladeRF@nuand.com}{\textless{brian.padalino@nuand.com}\textgreater}}
+\def \emailjszymaniak   {\href{mailto:jon.szymaniak@nuand.com?cc=bladeRF@nuand.com}{\textless{jon.szymaniak@nuand.com}\textgreater}}
+\def \afilnuand         {Nuand, LLC}
+
+% Define authors table
+\def \authors{
+  \begin{table}[h]
+    \centering
+    \begin{tabular}{cc}
+      Brian Padalino    & Jon Szymaniak     \\ 
+      \emailbpadalino   & \emailjszymaniak  \\
+      \afilnuand        & \afilnuand        \\
+    \end{tabular}
+  \end{table}
+}
+
+% Contributors table
+%\def \contributors{
+%  \begin{table}[h]
+%    \centering
+%    \begin{tabular}{c}
+%    \end{tabular}
+%  \end{table}
+%}
+
+\def \tablerowcolor{\rowcolor[HTML]{C0C0C0}}
+\def \tablecolcolor{\columncolor[HTML]{C0C0C0}}
+
+\def \revisions {
+  \begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|l|}
+      \hline
+      \tablerowcolor
+      \textbf{Revision} & \textbf{Date} & \textbf{Summary} \hspace{4in}  \\ \hline
+      1  & TBD & Draft: Work in progress \\ \hline
+    \end{tabular}
+  \end{table}
+}
+
+% Enable Figure and Table index
+\def \enablefiguretableindex{yes}
+
+% Enable acronym list
+\def \enableacronymlist{yes}
+
+\input{include/template.tex}
+
+\begin{document}
+
+\whitepapercover
+\docinfo
+
+\section{Overview}
+
+This is document provides both architectural and usage information for the
+Nuand bladeRF \ac{SDR} \cite{BLADERF}.
+
+\newpage
+{\footnotesize \bib}
+\end{document}
