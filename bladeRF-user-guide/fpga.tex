@@ -1,0 +1,61 @@
+\section{FPGA} \label{sec:arch}
+
+The FPGA is a very flexible baseband processing element to the bladeRF.
+Modifying the FPGA is highly encouraged and welcomed.
+
+\subsection{Building the FPGA Image} \label{sec:fpga-building}
+Describe how to build the FPGA image here.
+
+\subsection{Modification} \label{sec:fpga-mods}
+The bladeRF Quartus II project is separated into different revisions.  The
+preferred method to building a modification is to create and build a new
+revision of the FPGA you wanted to modify.
+
+\subsubsection{Adding A New Revision} \label{sec:fgpa-newrev}
+Steps to creating a new revision in the project.
+Steps for creating the QIP file.
+Steps for modification of the source.
+
+\subsection{Clock Domains} \label{sec:fpga-clocks}
+The FPGA has four main clock domains: 80~MHz NIOS II clock, 100~MHz GPIF clock,
+RX clock, TX clock.  The RX and TX clocks, while they may be the same
+frequency, are considered asynchronous to each other due to their unknown
+phase relationship.
+
+\subsection{NIOS II Soft CPU} \label{sec:fpga-nios}
+The NIOS II Soft CPU inside the FPGA mainly handles command and control of the
+bladeRF.  Commands and responses are sent via a UART operating at 4~Mbaud in
+an 8-N-1 configuration.
+
+Specifics of the command packet can be found in the software section.
+
+\subsection{GPIF Interface} \label{sec:fpga-gpif}
+The GPIF interface is a 32-bit bidirectional interface running at 100~MHz.
+This interfaces with the \texttt{fx3\_gpif} block in the FPGA.
+
+For transfers flowing from the FPGA to the GPIF, the FPGA first checks whether
+there is enough data for a full DMA transfer.  The DMA transfer size is
+determined by the firmware running in the FX3.  By default, each transfer over
+the GPIF is 512 32-bit words (2048 bytes) when the USB speed is SuperSpeed, and
+256 32-bit words (1024 bytes) when the USB speed is High.  The bladeRF cannot
+operate at any other speed.
+
+\begin{center}
+    \begin{tikztimingtable}
+        [timing/d/background/.style={fill=white}, timing/lslope=0.2]
+            PCLK    & L 10{T}         ;[dotted] 4L; 10{T} \\
+            RX REQ  & L H 7H H H     ;[dotted] 4H; 5H 5L   \\
+            RX ACK  & L L H 6H H H   ;[dotted] 4H; 5H 5L   \\
+            DATA    & U U D 6D D D   ;[dotted] 4D; 5D 5U   \\
+        \extracode
+            \begin{pgfonlayer}{background}
+                \begin{scope}[semitransparent,semithick]
+                    % \vertlines[gray]{2.1,4.1,...,21.1} % Falling edge
+                    \vertlines[gray]{1.1,3.1,...,9.1, 15.1, 17.1,...,23.1} % Rising edge with skip over dot
+                \end{scope}
+            \end{pgfonlayer}
+    \end{tikztimingtable}
+\end{center}
+
+Example timing diagram.
+
