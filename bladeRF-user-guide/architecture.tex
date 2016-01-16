@@ -1,0 +1,70 @@
+\section{Architecture} \label{sec:arch}
+
+The architecture of the bladeRF consists primarily of a LimeMicro LMS6002D RF
+transceiver (RF section), an Altera Cyclone IV FPGA (Baseband section), and a
+Cypress FX3 USB 3.0 controller (Transport section).
+
+It's recommended to read this section with a copy of the
+\href{https://nuand.com/bladerf.pdf}{schematic}\cite{BLADERF_SCHEMATIC}.
+
+\subsection{RF Section} \label{sec:arch-rf}
+The RF connections to the bladeRF are two SMA connections RX (J53) and TX (J54).
+Each of the RF sections are separated out into a low-band covering 300~MHz
+through 1.5~GHz and a high-band covering 1.5~GHz through 3.8~GHz.  The low-band
+input goes into RXLNA1 of the LMS6002D whereas the high-band goes into RXLNA2.
+The low-band output comes from TXOUT1 and the high-band output comes from
+TXOUT2.  Switching between the two bands is accomplished using an AS211-334
+SPDT which is controlled by the FPGA.
+
+For reception, internal to the LMS6002D is a zero-IF homodyne receiver
+architecture with over 70~dB of variable receive gain, tunable anti-aliasing
+filters with bandwidths from 1.5~MHz to 28~MHz, and pair of 12-bit ADCs for
+digitizing the baseband signal.  For external observation, header J71 connects
+to the analog differential output pins of the LMS6002D.  Pins 1 and 6 connect
+to IP and IN, respectively.  Pins 3 and 4 connect to QP and QN, respectively.
+
+\subsection{Baseband Section} \label{sec:arch-bb}
+The FPGA is responsible for receiving and transmitting digital baseband samples
+as well as command and control of the LMS6002D, Si5338, VCTCXO DAC and RF
+switching.
+
+The sample interface on the LMS6002D side is a simple 12-bit interface which
+transfers the IQ signal at twice the sample rate.
+
+The command and control interface for the LMS6002D is a 20~MHz SPI connection
+which is controlled using a NIOS soft CPU inside the FPGA.
+
+\subsection{Transport Section} \label{sec:arch-transport}
+The FX3 is utilized as a transport bridge between the USB connection and the
+FPGA.  Samples are communicated over the 32-bit GPIF-II interface whereas
+command/control is communicated over the UART.
+
+\subsection{Clocking} \label{sec:arch-clocking}
+The bladeRF uses a 1.5~ppm VCTCXO that has a fundamental frequency of 38.4~MHz.
+This clock is sent through a 1:2 buffer feeding the FX3 oscillator input as
+well as a Silicon Labs Si5338 clock generator.  The Si5338 distributes a
+free-running 38.4~MHz clock to the LMS6002D to be used as a frequency reference
+and to the Cyclone IV to be used as a system clock.
+
+The Si5338 is also responsible for creating both the TX and RX sampling clocks,
+both of which are independent from each other.  The RX clock is fed to the
+LMS6002D and fed back to the FPGA to produce a source-synchronous clocked
+interface.  The TX clock is considered system-synchronous since the
+FPGA is fed a clock with the same phase as the LMS6002D.
+
+The bladeRF is also capable of supplying a clock to the SMB connector at J62.
+The purpose of this clock is for distributing a common 38.4~MHz between
+multiple devices, or for generating a 10~MHz reference clock to lock external
+test equipment to the bladeRF.  The bladeRF cannot accept a 10~MHz input on
+J62.
+
+\subsection{Frequency Accuracy} \label{sec:arch-accuracy}
+The bladeRF has an on-board 16-bit DAC for fine tuning (trimming) the on-board
+VCTCXO.  During factory calibration, the SMB output is fed a buffered 38.4~MHz
+clock from the VCTCXO and an external frequency counter is used to measure the
+actual frequency.  An algorithm is used to find the DAC value which yields a
+measured frequency of 38.4~MHz $\pm 1$~Hz yielding a calibration within 26~ppb.
+
+Due to crystal aging and temperature variation versus calibration, the value
+of the DAC may have to change for frequency sensitive setups.
+
