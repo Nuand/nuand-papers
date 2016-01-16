@@ -8,13 +8,16 @@ DOCS := bladeRF_user_guide.pdf \
 		bladeRF_windows_installer.pdf \
 		bladeRF_frs.pdf \
 
+.SECONDEXPANSION:
+DEPS_bladeRF_user_guide.pdf := $(wildcard bladeRF-user-guide/*.tex)
+
 all: docs
 
 docs: deps $(DOCS)
 
 deps: latex-makefile
 
-%.pdf: %.tex
+%.pdf: %.tex $$(DEPS_$$@)
 	@if [ -e latex-makefile ]; then \
 		echo ""; \
 		echo "Building $@"; \
