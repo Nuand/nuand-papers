@@ -53,3 +53,4 @@ For Ubuntu users, The following texlive packages are recommended:
  - texlive-science
  - texlive-pictures
 
+To render HTML pages, the `pdf2htmlEX` package is requied.

@@ -1,10 +1,12 @@
 # Build documents in nuand-papers repo
-# This uses the 
+
+PDF2HTML_PROG := pdf2htmlEX
+PDF2HTML := $(shell which $(PDF2HTML_PROG))
 
 TEMPLATE_REV := d1e296d85bcba8f464facb4b9e17404606020e48
 LATEX_MAKEFILE_REV := 2.2.1-alpha10
 
-DOCS := bladeRF_user_guide.pdf \
+PDFS:= 	bladeRF_user_guide.pdf \
 		bladeRF_windows_installer.pdf \
 		bladeRF_frs.pdf \
 
@@ -13,9 +15,11 @@ DEPS_INCLUDE = $(wildcard include/*.tex)
 .SECONDEXPANSION:
 DEPS_bladeRF_user_guide.pdf := $(wildcard bladeRF-user-guide/*.tex) \
 							   include/template.tex
-all: docs
+all: pdfs htmls
 
-docs: deps $(DOCS)
+pdfs: deps $(PDFS)
+
+htmls: $(PDFS:.pdf=.html)
 
 deps: latex-makefile
 
@@ -29,6 +33,15 @@ deps: latex-makefile
 		echo "" 1>&2; \
 		echo "LaTeX Makefile is missing. Try running 'make deps'." 1>&2; \
 		echo "" 1>&2; \
+	fi
+
+%.html: %.pdf
+	@if [ -e "$(PDF2HTML)" ]; then \
+		echo "Building $@"; \
+		echo "-------------------------------------------------------------"; \
+		$(PDF2HTML) $< 2>&1; \
+	else \
+		echo "Error: Cannot build $@. The program $(PDF2HTML_PROG) is missing." 1>&2; \
 	fi
 
 latex-makefile:
