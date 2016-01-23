@@ -275,7 +275,7 @@
 \definecolor{code-background}{gray}{0.90}
 \definecolor{code-comment}{HTML}{005200}
 
-% Put whatever snippet in a box
+% Snippet in a box, no highlighting
 \lstdefinestyle{snippet}{
     backgroundcolor=\color{code-background},
     frame=single,
@@ -284,9 +284,8 @@
     keepspaces=true,
 }
 
-% For use with command-line invocation
-% examples that are more than a line or two
-\lstdefinestyle{cmdline}{
+% Snippet with line numbers
+\lstdefinestyle{numbered-snippet}{
     backgroundcolor=\color{code-background},
     frame=single,
     basicstyle=\scriptsize\ttfamily,
@@ -295,5 +294,4 @@
     captionpos=b,
     commentstyle=\itshape\color{code-comment},
     keepspaces=true,
-    morecomment=[l]{\#},
 }

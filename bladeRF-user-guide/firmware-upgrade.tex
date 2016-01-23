@@ -40,7 +40,7 @@ may be used.
 
 \newpage
 \subsubsection{Command-line} \label{sec:fw-upgrade-cli}
-\begin{lstlisting}[style=cmdline]
+\begin{lstlisting}[style=numbered-snippet]
 $ bladeRF-cli -f bladeRF_fw_latest.img
 Flashing firmware...
 [INFO @ usb.c:498] Erasing 3 blocks starting at block 0
@@ -67,7 +67,7 @@ $ bladeRF-cli -e version
 \end{lstlisting}
 
 \subsubsection{Interactive Mode} \label{sec:fw-upgrade-interactive}
-\begin{lstlisting}[style=cmdline]
+\begin{lstlisting}[style=numbered-snippet]
 $ bladeRF-cli -i
 bladeRF> load fx3 bladeRF_fw_latest.img
 
@@ -163,7 +163,7 @@ allowing the device to be opened in \bladerfcli.
 
 {
 \noindent\minipage{\linewidth}\medskip
-\begin{lstlisting}[style=snippet]
+\begin{lstlisting}[style=numbered-snippet]
 
 bladeRF> recover 1 11 bladeRF_fw_latest.img
 
