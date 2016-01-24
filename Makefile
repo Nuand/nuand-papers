@@ -10,7 +10,7 @@ PDFS:= 	bladeRF_user_guide.pdf \
 		bladeRF_windows_installer.pdf \
 		bladeRF_frs.pdf \
 
-DEPS_INCLUDE = $(wildcard include/*.tex)
+DEPS_INCLUDE = $(wildcard include/*.tex) $(wildcard include/*.bib)
 
 .SECONDEXPANSION:
 DEPS_bladeRF_user_guide.pdf := $(wildcard bladeRF-user-guide/*.tex) \

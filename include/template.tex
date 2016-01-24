@@ -251,22 +251,33 @@
 % Use these to ensure capitalization, trademarks, etc., are consistent
 % throughout documents.
 %%%
-\def \tm{\textsuperscript{\textregistered\:}}
-\def \windows{Windows\tm}
-\def \matlab{MATLAB\tm}
-\def \simulink{Simulink\tm}
-\def \fx3{FX3\tm}
-\def \bladerfcli{\program{bladeRF-cli}\:}
-\def \libbladerf{\program{libbladeRF}\:}
+\def \tm{\textsuperscript{\textregistered}}
+\def \windows{Windows\tm }
+\def \matlab{MATLAB\tm }
+\def \simulink{Simulink\tm }
+\def \fx3{FX3\tm }
+\def \osx{OS X }
+\def \bladerfcli{\program{bladeRF-cli }}
+\def \libbladerf{\program{libbladeRF }}
+\def \cmake{CMake }
+\def \pybombs{PyBOMBS }
+\def \zadig{Zadig }
+\def \libusb{libusb }
+\def \cypress{Cypress }
+\def \cyusb{\program{CyUSB3 }}
+\def \macports{MacPorts }
+\def \brew{Brew }
+\def \bladerf{bladeRF }
 
 %%%
 % Macros for various conventions
 %%%
 
-% Filename
 \newcommand{\fname}[1]{\texttt{#1}}
 \newcommand{\program}[1]{\texttt{#1}}
 \newcommand{\cmd}[1]{\texttt{#1}}
+\newcommand{\var}[1]{\texttt{#1}}
+
 
 %%%
 % Styles for code listings
@@ -282,6 +293,7 @@
     basicstyle=\scriptsize\ttfamily,
     numberstyle=\tiny,
     keepspaces=true,
+    captionpos=b,
 }
 
 % Snippet with line numbers
@@ -291,7 +303,7 @@
     basicstyle=\scriptsize\ttfamily,
     numberstyle=\tiny,
     numbers=left,
-    captionpos=b,
     commentstyle=\itshape\color{code-comment},
     keepspaces=true,
+    captionpos=b,
 }

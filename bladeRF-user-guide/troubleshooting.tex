@@ -1,0 +1,418 @@
+\section{Troubleshooting} \label{sec:troubleshooting}
+
+This section provides troubleshooting advice and solutions to common issues.
+
+\subsection{Getting Help}\label{sec:help}
+
+For issues not in this document, one may seek help through a number of other
+avenues:
+
+{\footnotesize
+\begin{itemize}
+    \item The \textit{Troubleshooting} forum \cite{TROUBLESHOOTING}
+    \item IRC: \#bladeRF on Freenode \cite {FREENODE}
+    \item Contacting Nuand
+        \begin{itemize}
+            \item \textit{Via email:} bladeRF@Nuand.com
+            \item \textit{Via the Web:} \url{https://www.nuand.com/contact.php}
+        \end{itemize}
+\end{itemize}
+}
+
+\subsubsection{Information to Provide}
+Below are some important of pieces of information to provide when asking
+questions.
+
+{\footnotesize
+\begin{itemize}
+    \item Information about the host machine
+    \begin{itemize}
+        \item Are you using a VM? What vitalization software and version?
+        \item Are you using an embedded system, smartphone, or tablet? What specific device are you using?
+        \item Are you using a USB 2.0 or USB 3.0 port? At which speed did the device connect?
+        \item What USB host controller are you using?
+    \end{itemize}
+
+    \item Information about the host OS
+    \begin{itemize}
+        \item What version are you using? (\textit{\textbf{Linux users}: What distribution is it?})
+        \item Is the OS 32-bit or 64-bit?
+    \end{itemize}
+
+     \item Software
+     \begin{itemize}
+         \item What \libbladerf, FPGA bitstream, and \fx3 firmware versions are in use?
+         \item Where was the software obtained (\textit{e.g., from source, from a package manager})
+         \item If using GNU Radio and/or gr-osmosdr, what are their corresponding versions?
+     \end{itemize}
+
+    \item Procedural issues
+    \begin{itemize}
+        \item What is the source of the procedure you are following? (\textit{e.g., website, guide, blog post, forum post})
+        \item What steps have you already performed? Which one is causing issues?
+    \end{itemize}
+
+    \item Logs and Output
+    \begin{itemize}
+        \item Note any warnings or error messages.
+        \item Gather verbose output from \bladerfcli using the \cmd{-v verobse} command-line option.
+        \item Gather verbose output from \libbladerf-based programs by setting the \var{BLADERF\_LOG\_LEVEL} environment variable to \var{verbose}.
+        \item \texttt{Linux Users:} Make a note of any relevant information in \cmd{dmesg} output.
+    \end{itemize}
+\end{itemize}
+}
+
+\subsection{Configuration and Build Issues}
+
+\subsubsection{Warnings treated as errors}
+
+By default, the host software is build with \texttt{-Werror} or \texttt{/WX},
+with the intent of forcing developers and contributors to address warnings.
+
+If you find that host software is not building due to a warning being treated
+as an error, please contact the \bladerf developers to report this. Be sure
+to accompany verbose build logs and your compiler version.
+
+As a temporary workaround, you may configure the build to disable this behavior:
+\begin{lstlisting}[style=snippet]
+    cmake -DTREAT_WARNINGS_AS_ERRORS=OFF <path to CMakeLists.txt>
+\end{lstlisting}
+
+\subsubsection{Missing libusb}
+
+\textit{\textbf{Linux and \osx}:}
+If \cmake reports that libus is not found, it may be the case that
+\program{pkg-config} could not find the library and/or its development headers.
+Ensure the libusb development package has been installed and that the library
+is in the standard library path or a location specified by the
+\var{PKG\_CONFIG\_PATH} environment variable.
+
+\textit{\textbf{\windows}:}
+Verify that the \var{LIBUSB\_PATH} variable provided to \cmake is correctly assigned to
+the location where libusb has been downloaded and extracted.
+
+\subsubsection{Outdated libusb}
+
+If the following message is printed when running \cmake, a newer libusb version
+must be installed.
+
+\begin{lstlisting}[style=snippet]
+Failed to compile (compiled=0) or run (retval=255) libusb version check.
+This may occur if libusb is earlier than v1.0.10.
+Setting LIBUSB_VERSION to 0.0.0
+\end{lstlisting}
+
+libusb v1.0.10 or later is required to build. The latest available version is
+\textbf{highly} recommended, due to numerous fixes and improvements (or added
+support) for USB 3.0 and various OSes. See the libusb \fname{ChangeLog} file
+\cite{LIBUSB_CHANGELOG} for more information.
+
+\subsection{Runtime Issues}
+
+\subsubsection{Unable to Find/Open Device: Linux}\label{sec:open-linux}
+
+If unable to open the \bladerf in Linux, it may be the case that the current
+user does not have sufficient permissions to access the device.
+
+As of \libbladerf v1.5.0, a warning will be printed if this is the case and
+associated API functions will return a status of \var{BLADERF\_ERR\_PERMISSION}.
+
+\begin{lstlisting}[style=numbered-snippet, caption=Insufficient permissions to probe device]
+$ bladeRF-cli -p
+
+[WARNING @ libusb.c:292] Found a bladeRF via VID/PID, but could not open
+                         it due to insufficient permissions.
+
+  probe: No devices are available. If one is attached, ensure it
+         is not in use by another program and that the current
+         user has permission to access it.
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=numbered-snippet, caption=Insufficient permissions to open device]
+[WARNING @ libusb.c:428] Found a bladeRF via VID/PID, but could not open
+                         it due to insufficient permissions.
+
+No bladerf device(s) available.
+
+If one is attached, ensure it is not in use by another program
+and that the current user has permission to access it.
+\end{lstlisting}
+
+If using an older version, note that using running
+\cmd{bladeRF-cli -v verbose} will print out more information about error codes,
+and that setting \var{BLADERF\_LOG\_LEVEL=debug} in your environment will
+provide additional debug output.
+
+In order to access the \bladerf, Linux users must ensure:
+%
+\begin{itemize}
+    \item The \fname{88-nuand.rules} file has been installed to \fname{/etc/udev/rules.d/}
+    \item When building from source, the CMake option \var{INSTALL\_UDEV\_RULES} defaults to \var{ON}.
+    \item The user is in the group specified by the CMake variable \var{BLADERF\_GROUP}.
+\end{itemize}
+
+
+The \var{BLADERF\_GROUP} defaults to \var{plugdev}, because Debian/Ubuntu users are
+typically in this group when allowed to access removable USB storage devices.
+You may wish to change this to conform to your security policies or
+distribution.  The udev rules have been reloaded since the installation of the
+aforementioned rules file. This can be done via executing the following
+command and then re-plugging the device:
+
+\centerline{\cmd{sudo udevadm control --reload-rules}}
+
+If you have verified the above items and still cannot see the device:
+
+\begin{itemize}
+    \item Ensure the device is powered, as indicated by a lit LED \texttt{D1}.
+    \item Confirm that you see the device in the output of \cmd{lsusb -v}
+    \item Look for any information about the device's connection in the output
+          \program{dmesg}
+    \item Look for any failure messages in the log from the command:\\
+          \cmd{bladeRF-cli -e version -v verbose}
+    \item Examine and test the above for both USB 2.0 and USB 3.0 ports, if possible.
+\end{itemize}
+
+\subsubsection{Unable to Find/Open Device: \windows}\label{sec:open-windows}
+
+To find and open the \bladerf in \windows, either a \libusb-based
+driver or \cypress \cyusb driver must be installed. These drivers
+may be installed using the \bladerf \windows installer
+\cite{BLADERF_WINDOWS_INSTALL_GUIDE}. Alternatively, one may use \zadig
+\cite{ZADIG} to install a \libusb-based driver.
+
+Once a driver has been installed, ensure that the device is listed as
+being associated with this driver in Device Manager. If this is the case
+and the device still cannot be opened:
+
+\begin{itemize}
+    \item Ensure the device is powered, as indicated by a lit LED \texttt{D1}.
+    \item Look for any failure messages in the log from the command:\\
+          \cmd{\bladerf-cli -e version -v verbose}
+    \item Examine and test the above for both USB 2.0 and USB 3.0 ports, if possible.
+\end{itemize}
+
+\subsubsection{Unable to Find/Open Device: \osx}\label{sec:open-osx}
+
+If a device cannot be opened in \osx, first verify that the device is
+powered on (which may be observed via LED \texttt{D1}) and is
+is detected by the system:
+
+\begin{lstlisting}[style=snippet, caption=\cmd{system\_profiler} output showing connected \bladerf]
+$ system_profiler SPUSBDataType
+
+USB:
+
+    USB 3.0 Bus:
+
+      Host Controller Driver: AppleUSBXHCIPPT
+      PCI Device ID: 0x1e31
+      PCI Revision ID: 0x0004
+      PCI Vendor ID: 0x8086
+
+        bladeRF:
+
+          Product ID: 0x6066
+          Vendor ID: 0x1d50
+          Version: 0.00
+          Serial Number: 9d1698a25946a1ce2876ab5953b45fb
+          Speed: Up to 5 Gb/sec
+          Manufacturer: Nuand
+          Location ID: 0x14600000 / 10
+          Current Available (mA): 1800
+          Current Required (mA): 200
+          Extra Operating Current (mA): 300
+
+    USB 3.0 Bus:
+
+      Host Controller Driver: AppleUSBXHCIPCI
+      PCI Device ID: 0x1142
+      PCI Revision ID: 0x0000
+      PCI Vendor ID: 0x1b21
+\end{lstlisting}
+
+If the device appears in \cmd{system\_profiler} output:
+
+\begin{itemize}
+    \item Look for any failure messages in the log from the command:\\
+          \cmd{bladeRF-cli -e version -v verbose}
+      \item Look for any connection-related information in the output of: \cmd{sudo dmesg}
+    \item Examine and test the above for both USB 2.0 and USB 3.0 ports, if possible.
+    \item Reinstall \libusb from \macports or \brew. It has been reported that after
+        performing a system upgrade, conflicts between the \osx \libusb and a version
+        installed via \macports or \brew result in the inability to open a \bladerf.
+        Reinstalling \libusb from the associated third-party package manager has
+        been found to be a solution to this.
+\end{itemize}
+
+\subsubsection{Permissions Errors with PyBOMBS-based Install}\label{sec:open-linux}
+\pybombs \cite{PYBOMBS} allow users to perform installations as non-root users.
+To support this, it builds \bladerf support using the \cmake argument,
+\var{-DINSTALL\_UDEV\_RULES=OFF}.  This prevents the installation from
+attempting to copy \program{udev} rules to \fname{/etc/udev/rules.d/}.  As a
+result, users may see the permissions errors
+shown in Section \ref{sec:open-linux}.
+
+Therefore, \pybombs users may need to (have their administrator) install the
+\fname{88-nuand.rules} \cite{BLADERF_UDEV} file:
+
+\begin{lstlisting}[style=numbered-snippet, caption=Manually installing udev rules]
+# Download this file from the source repository
+$ wget https://github.com/Nuand/bladeRF/blob/master/host/misc/udev/88-nuand.rules.in
+$ mv 88-nuand-rules.in 88-nuand.rules
+
+# Edit the file to replace @BLADERF_GROUP@ with a group your user is in.
+$ vi 88-nuand.rules
+
+# Change its permissions and install it
+$ sudo chmod 644 88-nuand.rules
+$ sudo mv 88-nuand.rules /etc/udev/rules.d/
+
+# Reload the rules. Unplug and re-attach the device after running this.
+$ sudo udevadm control --reload-rules
+\end{lstlisting}
+
+\subsubsection{Failure to Use Device on Embedded Platforms}
+
+Some embedded platforms may not be able to supply a sufficient amount of
+power to the \bladerf via the USB connection alone (especially on USB 2.0). The
+symptoms of the device being underpowered vary. The device may
+constantly enumerate in bootloader mode, or the device fails to open while
+attempting to load its FPGA bitstream.
+
+Therefore, when working with embedded platforms, it is recommended to either:
+\begin{itemize}
+    \item Use a USB 3.0 port, if available.
+    \item Use an \textbf{externally powered} USB 3.0 hub.
+    \item Power the \bladerf through its DC barrel jack instead of the USB connection.
+\end{itemize}
+
+\subsubsection{Multiple Programs Attempting to Access the Device}
+
+\libbladerf allows only one process to access the device at any given time. If
+an application unexpectedly reports that no \bladerf devices are available, ensure
+that no applications are currently holding open device handles.
+
+When applications are holding a handle to a \bladerf, \texttt{LED2} on the
+\bladerf will blink. This provides a quick visual means of checking whether
+another process was left using the device.
+
+\subsubsection{Failures on USB 3.0 only}
+
+If a \bladerf operates correctly on a USB 2.0 connection, but not on a USB 3.0
+connection, it may be the case that: \begin{itemize}
+    \item \textbf{\libusb}: A newer \libusb version may be required. See the
+        \libusb CHANGELOG \cite{LIBUSB_CHANGELOG} for notes regarding USB 3.0
+        support on your operating system.
+
+    \item \textbf{Linux}: Driver or kernel updates may be required. For example,
+        a 3.12 patch \cite{LINUX_SGLIMIT_PATCH} was reported to resolve
+        FPGA-loading issues on USB 3.0 with certain host controllers.. Other
+        fixes applied after the 3.13 kernel release reportedly fixed issues
+        such as poor transfer rates and system-wide lockups when using a
+        Renesase uPD720202-based
+        controller.
+
+    \item The USB 3.0 controller being used may require a firmware or driver
+        update.  Early XHCI controllers are known to have a number of defects.
+        Check the chipset or card manufacturer's website for updates.
+
+        Should USB 3.0 issues be found to be associated to a particular chipset, it is
+        recommended to upgrade to at \textit{least} an Intel 7 Series XHCI. (Later
+        series have been found to yield improved perfomance.)
+
+\end{itemize}
+
+\subsubsection{libbladerf Messages About Outdated Firmware or FPGA}
+
+\libbladerf will print warnings if it detects that either firmware executing on the \fx3
+or the bitstream loaded in the FPGA are too old to allow for proper operation.
+
+Additionally, \libbladerf will return the \var{BLADERF\_ERR\_SUPPORT} status
+code when API functionality is not available with the firmware or FPGA version being
+used. Enabling the debug log-level will often provide additional information in
+this case.
+
+See Section \ref{sec:fw-upgrade} for more information about upgrading the \fx3 firmware,
+and the Nuand FPGA download page \cite{BLADERF_FPGA} for the latest FPGA version.
+
+\subsubsection{Messages About Outdated libbladeRF}
+
+\libbladerf prints one the following messages if the \fx3 firmware or FPGA bitstream
+versions in use supersedes the version of libbladeRF that is in use:
+
+\begin{lstlisting}[style=snippet]
+    FPGA version (vX.Y.Z) is newer than entries in libbladeRF's compatibility table.
+    Please update libbladeRF if problems arise.
+\end{lstlisting}
+
+\begin{lstlisting}[style=snippet]
+    Firmware version (vX.Y.Z) is newer than entries in libbladeRF's compatibility table.
+    Please update libbladeRF if problems arise.
+\end{lstlisting}
+
+This message is simply intended to let the user know that the firmware or FPGA
+versions being used have been developed and tested with a newer version of \libbladerf.
+In most cases, \libbladerf will operate successfully with newer versions of
+these items. However, it is generally recommended to upgrade \libbladerf to
+obtain fixes and new features.
+
+\subsubsection{bladeRF-cli Reports Device is in Bootloader Mode}
+
+When starting up, \bladerfcli detects devices in this bootloader mode
+and prints a message alerting users to this: \\
+
+\begin{lstlisting}[style=snippet]
+    NOTE: One or more FX3-based devices operating in bootloader mode
+          were detected. Run 'help recover' to view information about
+          downloading firmware to the device(s).
+\end{lstlisting}
+
+See Section \ref{sec:recovery} for more information about recovering from
+this state.
+
+\subsubsection{Devices Times Out While Loading FPGA}
+
+Attempting to load the wrong (or corrupted) FPGA image to the bladeRF results
+in \libbladerf returning the \var{BLADERF\_ERR\_TIMEOUT} status code. Verify
+that you are using the correct image for your device.
+
+If you are unsure as to which size FPGA is on your \bladerf, identify the
+Altera Cyclone IV package on the top of the \bladerf. The chip package should
+read \textit{EP4CExF23C8N}, where \textit{x} is either 40 or 115. Use the
+\fname{hostedx40.rbf} file for the former, and \fname{hostedx115.rbf} for the latter.
+
+\subsubsection{Failure to find libbladeRF.so, libbladeRF.dylib, or bladeRF.dll}
+
+If a program fails to run, printing a message that \fname{libbladeRF.so} (Linux),
+\fname{libbladeRF.dylib} (OSX), or \fname{bladeRF.dll} (\windows) cannot be found,
+it may be the case that the system does not have \libbladerf in its library search path.
+
+\textbf{Linux and OSX}:
+If you have build \bladerf software from source, but are unsure where it has
+been installed, refer to the \fname{install\_manifest.txt} file within your
+build directory, and/or the \var{CMAKE\_INSTALL\_PREFIX} variable in
+\fname{CMakeCache.txt}
+
+\textbf{Linux}: \\
+Ensure that \libbladerf is installed in a location specified in one of the files
+in \fname{/etc/ld.so.conf.d/} or create a new file in this directory specifying the
+location of \libbladerf. Check the output of \program{ldd <your program>} to
+determine where the program is attempting to find \libbladerf. Using
+\var{LD\_LIBRARY\_PATH} may be helpful in debugging library path issues, but
+is not recommended as a permanent solution.
+
+
+\textbf{\osx}: \\
+Generally, applications in OSX utilize \texttt{@rpath} to establish paths to
+shared libraries. Use \cmd{otool -L <your program>} to check the location where
+the program is attempting to find \libbladerf. Using \var{DYLIB\_LIBARARY\_PATH}
+may be helpful in debugging library path issues, but is not recommended as a
+permanent solution.
+
+\textbf{\windows}: \\
+Ensure that the folder containing \program{bladeRF.dll} is listed in the \var{PATH}
+environment variable. If you have updated \var{PATH} (either manually or via the
+\bladerf installer), you may need to log out and log back in before the change
+takes effect.
