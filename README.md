@@ -50,4 +50,5 @@ For Ubuntu users, The following texlive packages are recommended:
  - texlive-latex-recommended
  - texlive-latex-extra
  - texlive-math-extra
+ - texlive-science
 
