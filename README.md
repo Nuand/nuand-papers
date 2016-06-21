@@ -35,8 +35,12 @@ to generate the documents from the LaTeX sources. This is checked out when runni
 `make` for the first time, or when running `make latex-makefile`.  This is removed
 when running `make distclean`.
 
-Running `make` should use the aformentioned build scripts to generate a PDF for
-each `.tex` file listed in the top-level `Makefile`.
+The [pdf2htmlEX](https://coolwanglu.github.io/pdf2htmlEX/) program is required
+to build HTML files from generated PDF files.  HTML files will not be built if
+this is not installed.
+
+Running `make` should use the aforementioned build scripts to generate a PDF and
+HTML file for each `.tex` file listed in the top-level `Makefile`.
 
 For Ubuntu users, The following texlive packages are recommended:
  - texlive

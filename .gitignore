@@ -16,3 +16,5 @@
 
 latex-makefile
 *.pdf
+*.html
+.pdf2htmlEX_version

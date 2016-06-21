@@ -7,11 +7,13 @@ LATEX_MAKEFILE_REV := 2.2.1-alpha10
 DOCS := bladeRF_frs.pdf \
 		bladeRF_windows_installer.pdf \
 
+HTML := $(DOCS:.pdf=.html)
+
 all: docs
 
-docs: deps $(DOCS)
+docs: deps $(DOCS) $(HTML)
 
-deps: latex-makefile
+deps: latex-makefile .pdf2htmlEX_version
 
 %.pdf: %.tex
 	@if [ -e latex-makefile ]; then \
@@ -25,6 +27,19 @@ deps: latex-makefile
 		echo "" 1>&2; \
 	fi
 
+%.html: %.pdf
+	@if [ -e .pdf2htmlEX_version ]; then \
+		echo ""; \
+		echo "Building $@"; \
+		echo "-------------------------------------------------------------"; \
+		pdf2htmlEX $< $@ 2>&1; \
+	else \
+		echo "" 1>&2; \
+		echo "The pdf2htmlEX program is missing. Unable to build $@" 1>&2; \
+		echo "" 1>&2; \
+	fi
+
+
 latex-makefile:
 	@echo ""
 	@echo "Checking out LaTeX makefile..."
@@ -33,16 +48,27 @@ latex-makefile:
 		git checkout -b waveform-doc $(LATEX_MAKEFILE_REV) 2>/dev/null 1>&2 && \
 		./build
 
+.pdf2htmlEX_version:
+	@if pdf2htmlEX --version >/dev/null 2>&1; then \
+		pdf2htmlEX --version > .pdf2htmlEX_version 2>&1; \
+	else \
+		echo "" 1>&2; \
+		echo "pdf2htmlEX not found. Unable to build .html targets." >&2; \
+		echo "" 1>&2; \
+	fi
+
 clean:
 	@if [ -e latex-makefile/Makefile ]; then \
 		make -f latex-makefile/Makefile clean; \
 	fi
 
-	rm -rf output
+	rm -f *.pdf
+	rm -f *.html
 
 
 distclean: clean
 	rm -rf template
+	rm -f .pdf2htmlEX_version
 
 .PHONY: clean distclean
 
