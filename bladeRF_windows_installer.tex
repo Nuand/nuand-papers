@@ -115,8 +115,8 @@ Previous installer versions are located at:
 \subsection{Execute Installer}
 
 Ensure the bladeRF is not connected to the system. Do not connect it until
-after the installer completes successfully, or until instructed to do so in
-Section \ref{sec:fwupdate}.
+after the installer completes successfully, or until instructed to do so by
+the firmware upgrade console.
 
 Begin by running the installer executable. If \windows prompts whether the
 program should be allowed to execute, verify that the publisher is listed as
@@ -142,16 +142,19 @@ Next, the installer will prompt for an installation destination. Update this fie
 \subsubsection{Driver Installation}
 
 This screen presents three driver installation options. If this is
-the first time setting up the bladeRF software on the machine,
-either the \texttt{Cypress CyUSB3} or \texttt{libusb (WinUSB)}
-driver must installed.
+the first time installing bladeRF software on a machine, a driver must be
+installed. Otherwise, driver installation may be skipped using the last option.
 
-Either driver may be used. Both are provided as a matter of preference.
-Should one driver prove to be problematic on a system, the installer
-may be re-run to install the other. Additionally, a driver may be
-installed at a later time using Zadig\footnote{\url{http://zadig.akeo.ie/}}.
+As noted on this screen, some issues have been reported when using the CyUSB3
+driver for applications utilizing transmit capabilities. (RX-only applications
+have not been found to be affected.)
 
-If a driver is already installed, the last option may be used.
+Thus, until these issues have been further investigated and resolved, \textbf{it is recommended that the libusb driver be used}.
+
+This installer can always be re-run to (re)install a driver, or install
+a different driver. Additionally, a driver may be installed at a later time
+using Zadig\footnote{\url{http://zadig.akeo.ie/}}.
+
 
 \begin{figure}[h]
   \centering
