@@ -169,12 +169,22 @@ Click \texttt{Next} once the desired option is selected.
 
 The following page provides the option to update the bladeRF firmware during
 the installation process. This is generally recommended, as firmware releases
-generally include feature updates and fixes.
+include feature updates and fixes.
+
+As noted on this installation screen, the v2.0.0 bladeRF firmware introduces a new
+USB VID/PID. This requires libbladeRF (bladeRF.dll) v1.16.0 or later.
+
+However, third-party applications or other systems (e.g., live images, Linux
+distributions) may provide older libbladeRF versions that cannot detect a
+device running this newer firmware. Therefore, the v1.9.1 firmware is also
+provided for reverse compatibility purposes.
 
 It is always possible to upgrade (or downgrade) firmware at a later time using
-the \texttt{bladeRF-cli} program\footnote{via \texttt{bladeRF-cli -f <fx3
-firmware>}}. The FX3 firmware image is used for the update is installed in the
-location selected in \ref{sec:dest}, under the \texttt{fx3\_firmware} folder.
+the \texttt{bladeRF-cli} program\footnote{See \url{https://github.com/Nuand/bladeRF/wiki/Upgrading-bladeRF-firmware}}.
+The FX3 firmware images are provided in a \texttt{fx3\_firmware} folder
+within the bladeRF installation.
+
+This installer may also be re-run to switch between the v1.9.3 and v2.0.0 firmware.
 
 \begin{figure}[h]
   \centering
